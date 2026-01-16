@@ -56,12 +56,12 @@ void UART_DeInit(UartState *pState)
 
 uint16_t UART_RxAvailable(UartState *pState)
 {
-	return RB_GetDataCount(pState->rxBuf);
+	return pState->rxPresrvLen == 0 && RB_GetDataCount(pState->rxBuf);
 }
 
 uint16_t UART_TxAvailable(UartState *pState)
 {
-	return RB_GetDataCount(pState->txBuf);
+	return pState->txPresrvLen == 0 && RB_GetDataCount(pState->txBuf);
 }
 
 

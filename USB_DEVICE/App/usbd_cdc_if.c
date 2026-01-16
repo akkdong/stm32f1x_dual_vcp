@@ -95,7 +95,21 @@
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 
-USBD_CDC_LineCodingTypeDef Line_Coding[CDC_NO_OF_INSTANCE];
+USBD_CDC_LineCodingTypeDef Line_Coding[CDC_NO_OF_INSTANCE] =
+{
+	{
+	  115200, /* baud rate*/
+	  0x00,   /* stop bits-1*/
+	  0x00,   /* parity - none*/
+	  0x08    /* nb. of bits 8*/
+	},
+	{
+	  115200, /* baud rate*/
+	  0x00,   /* stop bits-1*/
+	  0x00,   /* parity - none*/
+	  0x08    /* nb. of bits 8*/
+	},
+};
 
 
 /** Received data over USB are stored in this buffer      */
@@ -175,11 +189,13 @@ static uint8_t CDC_Init_FS(uint8_t ch)
   RB_Init(&uart_rb_tx[ch], &uart_txBuf[ch][0], 256);
 
   UART_Init(&uartState[ch], ch == 0 ? &huart2 : &huart3, &uart_rb_rx[ch], &uart_rb_tx[ch]);
+  /*
   UART_Config(&uartState[ch],
 		  Line_Coding[ch].bitrate,
 		  Line_Coding[ch].format,
 		  Line_Coding[ch].paritytype,
 		  Line_Coding[ch].datatype);
+  */
 
   /* Set Application Buffers */
   uint8_t *data = UART_PreserveRxBuffer(&uartState[ch], 0, NULL);

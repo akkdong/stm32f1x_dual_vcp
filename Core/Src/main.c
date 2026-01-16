@@ -97,6 +97,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
@@ -104,6 +106,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint32_t lastTick = HAL_GetTick();
   while (1)
   {
 	for (int i = 0; i < CDC_NO_OF_INSTANCE; i++)
@@ -132,33 +135,9 @@ int main(void)
 
 			if (HAL_UART_Transmit_IT(uartState[i].pHandle, data, len) != HAL_OK)
 				UART_CheckoutTxBuffer(&uartState[i]);
-		}
-		/*
-		if (uartState[i].trasmitFlag == 0 && !RB_IsEmpty(uartState[i].rb_rx))
-		{
-			uint8_t *data;
-			int32_t len;
-			data = RB_GetConsecutiveData(uartState[i].rb_rx, &len);
-			if (data)
-			{
-				len = MIN(len, USB_FS_MAX_PACKET_SIZE);
-				CDC_Transmit_FS(i, data, len);
-				uartState[i].trasmitFlag = len;
-			}
-		}
 
-		if (uartState[i].txCache == 0 && !RB_IsEmpty(uartState[i].rb_tx))
-		{
-			uint8_t *data;
-			int32_t len;
-			data = RB_GetConsecutiveData(uartState[i].rb_tx, &len);
-			if (data)
-			{
-				HAL_UART_Transmit_IT(i == 0 ? &huart2 : &huart3, data, len);
-				uartState[i].txCache = len;
-			}
+			lastTick = HAL_GetTick();
 		}
-		*/
 	}
     /* USER CODE END WHILE */
 
@@ -372,14 +351,10 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 	if (huart == &huart2)
 	{
 		UART_CheckoutTxBuffer(&uartState[0]);
-		//RB_Flush(uartState[0].rb_tx, uartState[0].txCache);
-		//uartState[0].txCache = 0;
 	}
 	else if (huart == &huart3)
 	{
 		UART_CheckoutTxBuffer(&uartState[1]);
-		//RB_Flush(uartState[1].rb_tx, uartState[1].txCache);
-		//uartState[1].txCache = 0;
 	}
 }
 
@@ -388,14 +363,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	if (huart == &huart2)
 	{
 		UART_ProcessReceive(&uartState[0]);
-		//RB_Push(uartState[0].rb_rx, uartState[0].rxCache);
-		//HAL_UART_Receive_IT(&huart2, &uartState[0].rxCache, 1);
 	}
 	else if (huart == &huart3)
 	{
 		UART_ProcessReceive(&uartState[1]);
-		//RB_Push(uartState[1].rb_rx, uartState[1].rxCache);
-		//HAL_UART_Receive_IT(&huart3,  &uartState[1].rxCache, 1);
 	}
 }
 

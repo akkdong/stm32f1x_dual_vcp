@@ -74,7 +74,7 @@ EndBSPDependencies */
   * @{
   */
 
-USBD_CDC_HandleInfoDef USBD_CDC_HandleInfo[CDC_NO_OF_CLASS];
+USBD_CDC_HandleInfoDef USBD_CDC_HandleInfo[CDC_NO_OF_INSTANCE];
 
 /**
   * @}
@@ -188,7 +188,7 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgHSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
   USB_DESC_TYPE_CONFIGURATION,      /* bDescriptorType: Configuration */
   USB_CDC_CONFIG_DESC_SIZ,                /* wTotalLength:no of returned bytes */
   0x00,
-  0x02 * CDC_NO_OF_CLASS,   /* bNumInterfaces: 2 interface */
+  0x02 * CDC_NO_OF_INSTANCE,   /* bNumInterfaces: 2 interface */
   0x01,   /* bConfigurationValue: Configuration value */
   0x00,   /* iConfiguration: Index of string descriptor describing the configuration */
   0xC0,   /* bmAttributes: self powered */
@@ -287,7 +287,7 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgHSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
   HIBYTE(CDC_DATA_HS_MAX_PACKET_SIZE),
   0x00,                              /* bInterval: ignore for Bulk transfer */
 
-#if CDC_NO_OF_CLASS > 1
+#if CDC_NO_OF_INSTANCE > 1
   /*---------------------------------------------------------------------------*/
   //
   // CDC#2
@@ -393,7 +393,7 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgFSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
   USB_DESC_TYPE_CONFIGURATION,      /* bDescriptorType: Configuration */
   USB_CDC_CONFIG_DESC_SIZ,                /* wTotalLength:no of returned bytes */
   0x00,
-  0x02 * CDC_NO_OF_CLASS,   /* bNumInterfaces: 2 interface */
+  0x02 * CDC_NO_OF_INSTANCE,   /* bNumInterfaces: 2 interface */
   0x01,   /* bConfigurationValue: Configuration value */
   0x00,   /* iConfiguration: Index of string descriptor describing the configuration */
   0xC0,   /* bmAttributes: self powered */
@@ -492,7 +492,7 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgFSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
   HIBYTE(CDC_DATA_FS_MAX_PACKET_SIZE),
   0x00,                              /* bInterval: ignore for Bulk transfer */
 
-#if CDC_NO_OF_CLASS > 1
+#if CDC_NO_OF_INSTANCE > 1
   /*---------------------------------------------------------------------------*/
   //
   // CDC#2
@@ -701,14 +701,14 @@ static uint8_t  USBD_CDC_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
   UNUSED(cfgidx);
 
   //
-  USBD_CDC_HandleTypeDef *pClassData = (USBD_CDC_HandleTypeDef *)USBD_malloc(sizeof(USBD_CDC_HandleTypeDef) * CDC_NO_OF_CLASS);
+  USBD_CDC_HandleTypeDef *pClassData = (USBD_CDC_HandleTypeDef *)USBD_malloc(sizeof(USBD_CDC_HandleTypeDef) * CDC_NO_OF_INSTANCE);
   if (pClassData == NULL)
 	  return USBD_FAIL;
 
   pdev->pClassData = pClassData;
 
   //
-  for (uint8_t i = 0; i < CDC_NO_OF_CLASS; i++)
+  for (uint8_t i = 0; i < CDC_NO_OF_INSTANCE; i++)
   {
 	  //
 	  USBD_CDC_HandleTypeDef *hcdc = pClassData + i; // &(*pClassData)[i];
@@ -790,7 +790,7 @@ static uint8_t  USBD_CDC_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 {
   UNUSED(cfgidx);
 
-  for (uint8_t i = 0; i < CDC_NO_OF_CLASS; i++)
+  for (uint8_t i = 0; i < CDC_NO_OF_INSTANCE; i++)
   {
 	  USBD_CDC_HandleInfoDef *info = (USBD_CDC_HandleInfoDef *)&USBD_CDC_HandleInfo[i];
 
@@ -829,7 +829,7 @@ static uint8_t  USBD_CDC_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 
 static uint8_t WIndex2Channel(uint16_t index)
 {
-	for (uint8_t i = 0; i < CDC_NO_OF_CLASS; ++i)
+	for (uint8_t i = 0; i < CDC_NO_OF_INSTANCE; ++i)
 	{
 		USBD_CDC_HandleInfoDef *info = (USBD_CDC_HandleInfoDef *)&USBD_CDC_HandleInfo[i];
 
@@ -848,7 +848,7 @@ static uint8_t WIndex2Channel(uint16_t index)
 
 static uint8_t EP2Channel(uint8_t epnum, uint8_t type)
 {
-	for (uint8_t i = 0; i < CDC_NO_OF_CLASS; ++i)
+	for (uint8_t i = 0; i < CDC_NO_OF_INSTANCE; ++i)
 	{
 		USBD_CDC_HandleInfoDef *info = (USBD_CDC_HandleInfoDef *)&USBD_CDC_HandleInfo[i];
 
@@ -1046,7 +1046,7 @@ static uint8_t  USBD_CDC_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
   */
 static uint8_t  USBD_CDC_EP0_RxReady(USBD_HandleTypeDef *pdev)
 {
-	for (uint8_t i = 0; i < CDC_NO_OF_CLASS; ++i)
+	for (uint8_t i = 0; i < CDC_NO_OF_INSTANCE; ++i)
 	{
 	  USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef *)pdev->pClassData + i;
 

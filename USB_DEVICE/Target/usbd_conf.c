@@ -342,7 +342,7 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
   pma_track += 48;
   HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pdev->pData , 0x82 , PCD_SNG_BUF, pma_track);
   pma_track += 8;
-#if CDC_NO_OF_CLASS > 1
+#if CDC_NO_OF_INSTANCE > 1
   HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pdev->pData , 0x83 , PCD_SNG_BUF, pma_track);
   pma_track += 48;
   HAL_PCDEx_PMAConfig((PCD_HandleTypeDef*)pdev->pData , 0x02 , PCD_SNG_BUF, pma_track);
@@ -602,7 +602,7 @@ void USBD_LL_Delay(uint32_t Delay)
   */
 void *USBD_static_malloc(uint32_t size)
 {
-  static uint32_t mem[((sizeof(USBD_CDC_HandleTypeDef)*CDC_NO_OF_CLASS + 3)/4)+1];/* On 32-bit boundary */
+  static uint32_t mem[((sizeof(USBD_CDC_HandleTypeDef)*CDC_NO_OF_INSTANCE + 3)/4)+1];/* On 32-bit boundary */
   return mem;
 }
 

@@ -91,15 +91,15 @@
 /* Create buffer for reception and transmission           */
 /* It's up to user to redefine and/or remove those define */
 /** Received data over USB are stored in this buffer      */
-uint8_t UserRxBufferFS[CDC_NO_OF_CLASS][APP_RX_DATA_SIZE];
+uint8_t UserRxBufferFS[CDC_NO_OF_INSTANCE][APP_RX_DATA_SIZE];
 
 /** Data to send over USB CDC are stored in this buffer   */
-uint8_t UserTxBufferFS[CDC_NO_OF_CLASS][APP_TX_DATA_SIZE];
+uint8_t UserTxBufferFS[CDC_NO_OF_INSTANCE][APP_TX_DATA_SIZE];
 
-USBD_CDC_LineCodingTypeDef Line_Coding[CDC_NO_OF_CLASS];
+USBD_CDC_LineCodingTypeDef Line_Coding[CDC_NO_OF_INSTANCE];
 
-uint32_t Write_Index[CDC_NO_OF_CLASS]; /* keep track of received data over UART */
-uint32_t Read_Index[CDC_NO_OF_CLASS];  /* keep track of sent data to USB */
+uint32_t Write_Index[CDC_NO_OF_INSTANCE]; /* keep track of received data over UART */
+uint32_t Read_Index[CDC_NO_OF_INSTANCE];  /* keep track of sent data to USB */
 
 /* USER CODE END PRIVATE_VARIABLES */
 

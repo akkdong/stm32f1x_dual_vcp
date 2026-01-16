@@ -42,7 +42,7 @@ extern "C" {
   * @{
   */
 
-#define CDC_NO_OF_CLASS								2
+#define CDC_NO_OF_INSTANCE 							2
 
 #define CDC_IN_EP                                   0x81U  /* EP1 for data IN */
 #define CDC_OUT_EP                                  0x01U  /* EP1 for data OUT */
@@ -61,7 +61,7 @@ extern "C" {
 #define CDC_DATA_FS_MAX_PACKET_SIZE                 64U  /* Endpoint IN & OUT Packet size */
 #define CDC_CMD_PACKET_SIZE                         8U  /* Control Endpoint Packet size */
 
-#define USB_CDC_CONFIG_DESC_SIZ                     (9 + 66 * CDC_NO_OF_CLASS)
+#define USB_CDC_CONFIG_DESC_SIZ                     (9 + 66 * CDC_NO_OF_INSTANCE)
 #define CDC_DATA_HS_IN_PACKET_SIZE                  CDC_DATA_HS_MAX_PACKET_SIZE
 #define CDC_DATA_HS_OUT_PACKET_SIZE                 CDC_DATA_HS_MAX_PACKET_SIZE
 
@@ -127,7 +127,7 @@ typedef struct
 USBD_CDC_HandleTypeDef;
 
 //
-//typedef USBD_CDC_HandleTypeDef USBD_CDC_HandleArrayTypeDef[CDC_NO_OF_CLASS];
+//typedef USBD_CDC_HandleTypeDef USBD_CDC_HandleArrayTypeDef[CDC_NO_OF_INSTANCE];
 //
 
 
@@ -159,7 +159,7 @@ typedef struct
 
 } USBD_CDC_HandleInfoDef;
 
-extern USBD_CDC_HandleInfoDef USBD_CDC_HandleInfo[CDC_NO_OF_CLASS];
+extern USBD_CDC_HandleInfoDef USBD_CDC_HandleInfo[CDC_NO_OF_INSTANCE];
 
 
 /**

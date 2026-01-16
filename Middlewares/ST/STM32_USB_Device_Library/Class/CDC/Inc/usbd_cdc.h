@@ -103,11 +103,11 @@ typedef struct
 
 typedef struct _USBD_CDC_Itf
 {
-  int8_t (* Init)(uint8_t ch);
-  int8_t (* DeInit)(uint8_t ch);
-  int8_t (* Control)(uint8_t ch, uint8_t cmd, uint8_t *pbuf, uint16_t length);
-  int8_t (* Receive)(uint8_t ch, uint8_t *Buf, uint32_t *Len);
-  int8_t (*TransmitCplt)(uint8_t ch, uint8_t *Buf, uint32_t *Len, uint8_t epnum);
+  uint8_t (* Init)(uint8_t ch);
+  uint8_t (* DeInit)(uint8_t ch);
+  uint8_t (* Control)(uint8_t ch, uint8_t cmd, uint8_t *pbuf, uint16_t length);
+  uint8_t (* Receive)(uint8_t ch, uint8_t *Buf, uint32_t *Len);
+  uint8_t (*TransmitCplt)(uint8_t ch, uint8_t *Buf, uint32_t *Len, uint8_t epnum);
 } USBD_CDC_ItfTypeDef;
 
 
